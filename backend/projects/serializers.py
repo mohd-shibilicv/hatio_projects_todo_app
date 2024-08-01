@@ -10,3 +10,12 @@ class ProjectSerializer(serializers.ModelSerializer):
     class Meta:
         model = Project
         fields = ['id', 'title', 'created_date', 'owner', 'todos']
+
+
+class ProjectSummarySerializer(serializers.ModelSerializer):
+    total_todos = serializers.IntegerField()
+    completed_todos = serializers.IntegerField()
+
+    class Meta:
+        model = Project
+        fields = ['id', 'title', 'total_todos', 'completed_todos']

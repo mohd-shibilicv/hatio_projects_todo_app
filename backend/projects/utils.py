@@ -10,12 +10,16 @@ def create_gist(project: Project) -> str:
     total = project.todos.count()
     file_content += f"Summary: {completed} / {total} completed\n\n"
 
-    file_content += f"## Pending Todos\n"
+    file_content += f"## Pending Todos:\n"
     for todo in project.todos.filter(staus=False):
         file_content += f"- [ ] {todo.description}\n"
     
+    file_content += f"## Completed Todos:\n"
+    for todo in project.todos.filter(staus=True):
+        file_content += f"- [x] {todo.description}\n"
+
     gist = g.get_user().create_gist(
-        public=False,
+        public=True,
         files={f"{project.title}.md": {"content": file_content}},
         description=f"Gist for project {project.title}"
     )
