@@ -37,11 +37,21 @@ export const api = createApi({
         getProjects: builder.query({
             query: () => 'projects/',
         }),
+        getProject: builder.query({
+            query: (id) => `projects/${id}/`,
+        }),
         createProject: builder.mutation({
             query: (newProject) => ({
                 url: 'projects/',
                 method: 'POST',
                 body: newProject,
+            }),
+        }),
+        updateProject: builder.mutation({
+            query: ({ id, ...patch }) => ({
+                url: `projects/${id}/`,
+                method: 'PATCH',
+                body: patch,
             }),
         }),
         getTodos: builder.query({
@@ -56,7 +66,7 @@ export const api = createApi({
         }),
         updateTodo: builder.mutation({
             query: ({ id, ...patch }) => ({
-                url: `todos/${id}`,
+                url: `todos/${id}/`,
                 method: 'PATCH',
                 body: patch,
             })
@@ -75,7 +85,9 @@ export const {
     useRegisterMutation,
     useLogoutMutation,
     useGetProjectsQuery,
+    useGetProjectQuery,
     useCreateProjectMutation,
+    useUpdateProjectMutation,
     useGetTodosQuery,
     useCreateTodoMutation,
     useUpdateTodoMutation,
