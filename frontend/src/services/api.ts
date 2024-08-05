@@ -34,62 +34,12 @@ export const api = createApi({
                 body: { refresh_token: refreshToken },
             }),
         }),
-        getProjects: builder.query({
-            query: () => 'projects/',
-        }),
-        getProject: builder.query({
-            query: (id) => `projects/${id}/`,
-        }),
-        createProject: builder.mutation({
-            query: (newProject) => ({
-                url: 'projects/',
-                method: 'POST',
-                body: newProject,
-            }),
-        }),
-        updateProject: builder.mutation({
-            query: ({ id, ...patch }) => ({
-                url: `projects/${id}/`,
-                method: 'PATCH',
-                body: patch,
-            }),
-        }),
-        getTodos: builder.query({
-            query: (projectId) => `todos/?project=${projectId}`,
-        }),
-        createTodo: builder.mutation({
-            query: (newTodo) => ({
-                url: 'todos/',
-                method: 'POST',
-                body: newTodo,
-            }),
-        }),
-        updateTodo: builder.mutation({
-            query: ({ id, ...patch }) => ({
-                url: `todos/${id}/`,
-                method: 'PATCH',
-                body: patch,
-            })
-        }),
-        deleteTodo: builder.mutation({
-            query: (id) => ({
-                url: `todos/${id}`,
-                method: 'DELETE',
-            }),
-        }),
     }),
 });
+
 
 export const {
     useLoginMutation,
     useRegisterMutation,
     useLogoutMutation,
-    useGetProjectsQuery,
-    useGetProjectQuery,
-    useCreateProjectMutation,
-    useUpdateProjectMutation,
-    useGetTodosQuery,
-    useCreateTodoMutation,
-    useUpdateTodoMutation,
-    useDeleteTodoMutation,
 } = api;

@@ -1,39 +1,20 @@
-import React, { useEffect, useState } from "react";
-import { useGetProjectsQuery } from "../services/api";
-import Loader from "../components/Loader";
+import React from "react";
 import ProjectCard from "../components/ProjectCard";
 import CreateProjectBtn from "../components/CreateProjectBtn";
 import LogoutButton from "../components/LogoutBtn";
+import { useProjects } from "../hooks/useProjects";
 import { useSelector } from "react-redux";
 import { RootState } from "../store/store";
-import { TodoProps } from "./ProjectDetails";
-
-interface ProjectProps {
-  id: string;
-  title: string;
-  todos: TodoProps[];
-  created_date: string;
-}
 
 const Projects: React.FC = () => {
-  const { data, isLoading, isError } = useGetProjectsQuery({});
-  const [projects, setProjects] = useState(data?.results || []);
+  const { projects, loading, error, handleCreateProject } = useProjects();
+
   const isAuthenticated = useSelector(
     (state: RootState) => state.auth.isAuthenticated
   );
 
-  useEffect(() => {
-    if (data) {
-      setProjects(data.results);
-    }
-  }, [data]);
-
-  const handleNewProject = (newProject: any) => {
-    setProjects([newProject, ...projects]);
-  };
-
-  if (isLoading) return <Loader />;
-  if (isError) return <div>Error Loading Projects. Try again!</div>;
+  if (loading) return <div>Loading...</div>;
+  if (error) return <div>Error: {error}</div>;
 
   return (
     <main className="home-container">
@@ -45,20 +26,12 @@ const Projects: React.FC = () => {
                 <h3 className="text-28-semibold">All Projects</h3>
                 {isAuthenticated && <LogoutButton />}
               </div>
-              <CreateProjectBtn onCreate={handleNewProject} />
+              <CreateProjectBtn onCreate={handleCreateProject} />
             </div>
             <ul className="project-ul">
-              {projects?.map(
-                ({ id, title, todos, created_date }: ProjectProps) => (
-                  <ProjectCard
-                    key={id}
-                    id={id}
-                    title={title}
-                    todoCount={todos.length}
-                    createdAt={created_date}
-                  />
-                )
-              )}
+              {projects.map(project => (
+                <ProjectCard key={project.id} {...project} />
+              ))}
             </ul>
           </div>
         ) : (
@@ -70,7 +43,7 @@ const Projects: React.FC = () => {
               height={40}
               className="mx-auto"
             />
-            <CreateProjectBtn onCreate={handleNewProject} />
+            <CreateProjectBtn onCreate={handleCreateProject} />
           </div>
         )}
       </>

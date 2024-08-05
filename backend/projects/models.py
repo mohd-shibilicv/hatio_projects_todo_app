@@ -10,5 +10,8 @@ class Project(models.Model):
     created_date = models.DateTimeField(auto_now_add=True)
     owner = models.ForeignKey(User, on_delete=models.CASCADE, related_name='projects')
 
+    class Meta:
+        ordering = ('-created_date',)
+
     def __str__(self):
         return f"{self.title} - {self.owner}"

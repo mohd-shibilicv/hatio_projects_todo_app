@@ -2,19 +2,12 @@ import React from "react";
 import { Link } from "react-router-dom";
 import { dateConverter } from "../utils/dateConverter";
 
-interface ProjectCardProps {
-  id: string;
-  title: string;
-  todoCount: number;
-  createdAt: string;
-}
-
-const ProjectCard: React.FC<ProjectCardProps> = ({
+const ProjectCard: React.FC = ({
   id,
   title,
   todoCount,
   createdAt,
-}) => {
+}: any ) => {
     
   return (
     <Link
